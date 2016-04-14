@@ -1,8 +1,6 @@
 # Mumukit::Nuntius
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/mumukit/nuntius`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+> Simple wrapper for rabbitmq
 
 ## Installation
 
@@ -20,9 +18,20 @@ Or install it yourself as:
 
     $ gem install mumukit-nuntius
 
-## Usage
+## Consuming a queue
 
-TODO: Write usage instructions here
+```ruby
+    Mumukit::Nuntius::Consumer.start queue_name do |delivery_info, properties, body|
+      # do something here
+    end
+
+```
+
+## Publishing data
+
+```ruby
+    Mumukit::Nuntius::Publisher.publish_{{queue_name}} data
+```
 
 ## Development
 
