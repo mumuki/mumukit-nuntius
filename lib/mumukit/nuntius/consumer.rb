@@ -8,7 +8,7 @@ class Mumukit::Nuntius::Consumer
 
       queue.subscribe(:manual_ack => true, :block => true) do |delivery_info, properties, body|
         begin
-          yield delivery_info, properties, body
+          yield delivery_info, properties, JSON.parse(body).first
           channel.ack(delivery_info.delivery_tag)
         rescue Interrupt => _
           channel.close
