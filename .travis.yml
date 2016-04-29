@@ -1,0 +1,7 @@
+language: ruby
+cache: bundler
+sudo: false
+services:
+- rabbitmq
+rvm:
+- 2.0.0
