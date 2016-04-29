@@ -12,6 +12,7 @@ end
 
 require 'mumukit/nuntius/version'
 require 'mumukit/nuntius/connection'
+require 'mumukit/nuntius/channel'
 require 'mumukit/nuntius/publisher'
 require 'mumukit/nuntius/consumer'
 
