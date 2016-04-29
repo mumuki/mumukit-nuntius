@@ -1,4 +1,4 @@
-class Mumukit::Nuntius::Consumer
+module Mumukit::Nuntius::Consumer
 
 	class << self
 

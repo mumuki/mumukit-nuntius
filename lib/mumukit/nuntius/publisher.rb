@@ -1,4 +1,4 @@
-class Mumukit::Nuntius::Publisher
+module Mumukit::Nuntius::Publisher
 
   class << self
 
