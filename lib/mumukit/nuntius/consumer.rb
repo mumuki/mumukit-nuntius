@@ -7,13 +7,17 @@ class Mumukit::Nuntius::Consumer
       channel.prefetch(1)
 
       begin
-        queue.subscribe(:manual_ack => true, :block => true) do |delivery_info, properties, body|
-          yield delivery_info, properties, JSON.parse(body).first
-          channel.ack(delivery_info.delivery_tag)
-        end
+        subscribe queue, channel
       rescue Interrupt => _
         channel.close
         connection.close
+      end
+    end
+
+    def subscribe(queue, channel)
+      queue.subscribe(:manual_ack => true, :block => true) do |delivery_info, properties, body|
+        yield delivery_info, properties, JSON.parse(body).first
+        channel.ack(delivery_info.delivery_tag)
       end
     end
 	end
