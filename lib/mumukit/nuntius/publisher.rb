@@ -4,7 +4,7 @@ module Mumukit::Nuntius::Publisher
 
     def publish(queue_name, data)
       connection, channel, queue = Mumukit::Nuntius::Connection.start(queue_name)
-      channel.default_exchange.publish(data.to_json, :routing_key => queue_name, persistent: true)
+      channel.persistent_publish(data.to_json, queue_name)
       connection.close
     end
 
