@@ -11,7 +11,7 @@ module Mumukit::Nuntius::Publisher
     def method_missing(name, *args, &block)
       if name.to_s.starts_with? 'publish_'
         queue_name = name.to_s.split('publish_').last
-        publish queue_name, args
+        publish queue_name, *args
       else
         super
       end

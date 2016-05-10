@@ -17,7 +17,7 @@ module Mumukit::Nuntius::Consumer
     def subscribe(queue, channel, &block)
       queue.subscribe(:manual_ack => true, :block => true) do |delivery_info, properties, body|
         begin
-          block.call delivery_info, properties, JSON.parse(body).first
+          block.call delivery_info, properties, JSON.parse(body)
           channel.ack(delivery_info.delivery_tag)
         rescue => e
           Mumukit::Nuntius::Logger.warn "Failed to read body: #{e.message} \n #{e.backtrace}"
