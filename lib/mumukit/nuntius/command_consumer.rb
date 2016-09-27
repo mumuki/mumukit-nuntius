@@ -5,7 +5,7 @@ module Mumukit::Nuntius::CommandConsumer
     def start(name)
       Mumukit::Nuntius::Consumer.start "#{name}-commands" do |_delivery_info, _properties, body|
         begin
-          choose_command(name, body.delete('type')).execute!(body)
+          choose_command(name, body['type']).execute!(body['data'])
         rescue NameError => e
           logger.info "Command #{name}-#{type} does not exists."
         rescue => e
