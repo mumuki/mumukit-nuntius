@@ -16,4 +16,5 @@ require 'mumukit/nuntius/channel'
 require 'mumukit/nuntius/publisher'
 require 'mumukit/nuntius/consumer'
 require 'mumukit/nuntius/command_consumer'
+require 'mumukit/nuntius/command_publisher'
 
