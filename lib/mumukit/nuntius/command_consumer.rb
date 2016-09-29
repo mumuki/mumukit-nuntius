@@ -7,9 +7,9 @@ module Mumukit::Nuntius::CommandConsumer
         begin
           choose_command(name, body['type']).execute!(body['data'])
         rescue NameError => e
-          logger.info "Command #{name}-#{type} does not exists."
+          Mumukit::Nuntius::Logger.info "Command #{name}-#{type} does not exists."
         rescue => e
-          logger.info "Failed to proccess #{choose_command(name, type)}, error was: #{e}"
+          Mumukit::Nuntius::Logger.info "Failed to proccess #{choose_command(name, type)}, error was: #{e}"
         end
       end
     end
