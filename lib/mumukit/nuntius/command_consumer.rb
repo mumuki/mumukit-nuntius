@@ -5,17 +5,31 @@ module Mumukit::Nuntius::CommandConsumer
     def start(name)
       Mumukit::Nuntius::Consumer.start "#{name}-commands" do |_delivery_info, _properties, body|
         begin
-          choose_command(name, body['type']).execute!(body['data'])
+          choose_command(name, body).execute!(body['data'])
+        rescue NoMethodError => e
+          log_exception(name, body, e)
         rescue NameError => e
-          Mumukit::Nuntius::Logger.info "Command #{name}-#{body['type']} does not exists."
+          log_unkown_command(name, body)
         rescue => e
-          Mumukit::Nuntius::Logger.info "Failed to proccess #{choose_command(name, body['type'])}, error was: #{e}"
+          log_exception(name, body, e)
         end
       end
     end
 
-    def choose_command(name, type)
-      "#{name.capitalize}::Command::#{type}".constantize
+    def choose_command(name, body)
+      command_name(name, body).constantize
+    end
+
+    def command_name(name, body)
+      "#{name.capitalize}::Command::#{body['type']}"
+    end
+
+    def log_unkown_command(name, body)
+      Mumukit::Nuntius::Logger.error "#{command_name(name, body)} does not exists."
+    end
+
+    def log_exception(name, body, e)
+      Mumukit::Nuntius::Logger.error "Failed to proccess #{command_name(name, body)}, error was: #{e}"
     end
   end
 end
