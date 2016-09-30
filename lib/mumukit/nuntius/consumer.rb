@@ -1,6 +1,6 @@
 module Mumukit::Nuntius::Consumer
 
-	class << self
+  class << self
 
     def start(queue_name, &block)
       Mumukit::Nuntius::Logger.info "Attaching to queue #{queue_name}"
@@ -12,7 +12,7 @@ module Mumukit::Nuntius::Consumer
         subscribe queue, channel, &block
       rescue Interrupt => _
         Mumukit::Nuntius::Logger.info "Leaving queue #{queue_name}"
-
+      ensure
         channel.close
         connection.close
       end
@@ -34,5 +34,5 @@ module Mumukit::Nuntius::Consumer
         end
       end
     end
-	end
+  end
 end
