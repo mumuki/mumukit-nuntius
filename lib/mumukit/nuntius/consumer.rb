@@ -31,8 +31,7 @@ module Mumukit::Nuntius::Consumer
           channel.ack(delivery_info.delivery_tag)
         rescue => e
           Mumukit::Nuntius::Logger.warn "Failed to read body: #{e.message} \n #{e.backtrace}"
-          channel.persistent_publish(body, delivery_info.routing_key)
-          channel.nack(delivery_info.delivery_tag, requeue: true)
+          channel.nack(delivery_info.delivery_tag, false, true)
         end
       end
     end
