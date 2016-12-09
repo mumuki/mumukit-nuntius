@@ -2,10 +2,12 @@ module Mumukit::Nuntius::Consumer
 
   class << self
 
-    def start(queue_name, &block)
+    def start(queue_name, exchange_name, &block)
       Mumukit::Nuntius::Logger.info "Attaching to queue #{queue_name}"
 
-      connection, channel, queue = Mumukit::Nuntius::Connection.start(queue_name)
+      connection, channel, exchange = Mumukit::Nuntius::Connection.start(exchange_name)
+      queue = channel.queue(queue_name, durable: true)
+      queue.bind(exchange)
       channel.prefetch(1)
 
       begin

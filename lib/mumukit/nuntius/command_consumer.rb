@@ -3,7 +3,7 @@ module Mumukit::Nuntius::CommandConsumer
   class << self
 
     def start(name)
-      Mumukit::Nuntius::Consumer.start "#{name}-commands" do |_delivery_info, _properties, body|
+      Mumukit::Nuntius::Consumer.start "#{name}-commands", 'commands' do |_delivery_info, _properties, body|
         begin
           choose_command(name, body).execute!(body['data'])
         rescue NoMethodError => e
