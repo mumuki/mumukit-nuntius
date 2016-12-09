@@ -2,10 +2,12 @@ module Mumukit::Nuntius::Consumer
 
   class << self
 
-    def start(queue_name, &block)
+    def start(queue_name, exchange_name, &block)
       Mumukit::Nuntius::Logger.info "Attaching to queue #{queue_name}"
 
-      connection, channel, queue = Mumukit::Nuntius::Connection.start(queue_name)
+      connection, channel, exchange = Mumukit::Nuntius::Connection.start(exchange_name)
+      queue = channel.queue(queue_name, durable: true)
+      queue.bind(exchange)
       channel.prefetch(1)
 
       begin
@@ -29,8 +31,7 @@ module Mumukit::Nuntius::Consumer
           channel.ack(delivery_info.delivery_tag)
         rescue => e
           Mumukit::Nuntius::Logger.warn "Failed to read body: #{e.message} \n #{e.backtrace}"
-          channel.persistent_publish(body, delivery_info.routing_key)
-          channel.nack(delivery_info.delivery_tag, requeue: true)
+          channel.nack(delivery_info.delivery_tag, false, true)
         end
       end
     end

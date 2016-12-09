@@ -7,11 +7,11 @@ class Mumukit::Nuntius::Connection
           with_indifferent_access[ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development']
     end
 
-    def start(queue_name)
+    def start(exchange_name)
       connection = Bunny.new(host: config[:host], user: config[:user], password: config[:password])
       channel = connection.start.create_channel
-      queue = channel.queue(queue_name, durable: true)
-      [connection, channel, queue]
+      exchange = channel.fanout(exchange_name)
+      [connection, channel, exchange]
     end
   end
 end

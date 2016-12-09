@@ -2,9 +2,9 @@ module Mumukit::Nuntius::Publisher
 
   class << self
 
-    def publish(queue_name, data)
-      connection, channel, queue = Mumukit::Nuntius::Connection.start(queue_name)
-      channel.persistent_publish(data.to_json, queue_name)
+    def publish(exchange_name, data)
+      connection, channel, exchange = Mumukit::Nuntius::Connection.start(exchange_name)
+      exchange.publish(data.to_json, persistent: true)
       connection.close
     end
 
