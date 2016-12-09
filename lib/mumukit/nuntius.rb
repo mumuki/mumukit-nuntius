@@ -15,6 +15,6 @@ require 'mumukit/nuntius/connection'
 require 'mumukit/nuntius/channel'
 require 'mumukit/nuntius/publisher'
 require 'mumukit/nuntius/consumer'
-require 'mumukit/nuntius/command_consumer'
-require 'mumukit/nuntius/command_publisher'
+require 'mumukit/nuntius/event_consumer'
+require 'mumukit/nuntius/event_publisher'
 
