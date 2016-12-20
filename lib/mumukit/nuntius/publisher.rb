@@ -2,9 +2,9 @@ module Mumukit::Nuntius::Publisher
 
   class << self
 
-    def publish(exchange_name, data)
+    def publish(exchange_name, data, opts={})
       connection, channel, exchange = Mumukit::Nuntius::Connection.start(exchange_name)
-      exchange.publish(data.to_json, persistent: true)
+      exchange.publish(data.to_json, opts.merge(persistent: true))
       connection.close
     end
 

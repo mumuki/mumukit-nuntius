@@ -3,33 +3,34 @@ module Mumukit::Nuntius::EventConsumer
   class << self
 
     def start(name)
-      Mumukit::Nuntius::Consumer.start "#{name}-events", 'events' do |_delivery_info, _properties, body|
+      Mumukit::Nuntius::Consumer.start "#{name}-events", 'events' do |_delivery_info, properties, body|
+        next if body['sender'] == ENV['MUMUKI_APPLICATION_NAME']
         begin
-          choose_event(name, body).execute!(body['data'])
+          choose_event(name, properties).execute!(body['data'], body['action'])
         rescue NoMethodError => e
-          log_exception(name, body, e)
+          log_exception(name, properties, e)
         rescue NameError => e
-          log_unkown_event(name, body)
+          log_unkown_event(name, properties)
         rescue => e
-          log_exception(name, body, e)
+          log_exception(name, properties, e)
         end
       end
     end
 
-    def choose_event(name, body)
-      event_name(name, body).constantize
+    def choose_event(name, properties)
+      event_name(name, properties).constantize
     end
 
-    def event_name(name, body)
-      "#{name.capitalize}::Event::#{body['type']}"
+    def event_name(name, properties)
+      "#{name.capitalize}::Event::#{properties[:type]}"
     end
 
-    def log_unkown_event(name, body)
-      Mumukit::Nuntius::Logger.error "#{event_name(name, body)} does not exists."
+    def log_unkown_event(name, properties)
+      Mumukit::Nuntius::Logger.error "#{event_name(name, properties)} does not exists."
     end
 
-    def log_exception(name, body, e)
-      Mumukit::Nuntius::Logger.error "Failed to proccess #{event_name(name, body)}, error was: #{e}"
+    def log_exception(name, properties, e)
+      Mumukit::Nuntius::Logger.error "Failed to proccess #{event_name(name, properties)}, error was: #{e}"
     end
   end
 end
