@@ -6,7 +6,7 @@ module Mumukit::Nuntius::EventConsumer
       Mumukit::Nuntius::Consumer.start "#{name}-events", 'events' do |_delivery_info, properties, body|
         next if body['sender'] == ENV['MUMUKI_APPLICATION_NAME']
         begin
-          choose_event(name, properties).execute!(body['data'])
+          choose_event(name, properties).execute!(body['data'], body['action'])
         rescue NoMethodError => e
           log_exception(name, properties, e)
         rescue NameError => e
