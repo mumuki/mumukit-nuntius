@@ -4,7 +4,7 @@ module Mumukit::Nuntius::EventConsumer
 
     def start(name)
       Mumukit::Nuntius::Consumer.start "#{name}-events", 'events' do |_delivery_info, properties, body|
-        next if body['sender'] == ENV['MUMUKI_APPLICATION_NAME']
+        next if body['sender'] == Mumukit::Nuntius.config.app_name
         begin
           choose_event(name, properties).execute!(body['data'], body['action'])
         rescue NoMethodError => e
