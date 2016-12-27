@@ -10,7 +10,7 @@ module Mumukit::Nuntius::EventConsumer
         rescue NoMethodError => e
           log_exception(name, properties, e)
         rescue NameError => e
-          log_unkown_event(name, properties)
+          log_unknown_event(name, properties)
         rescue => e
           log_exception(name, properties, e)
         end
@@ -25,7 +25,7 @@ module Mumukit::Nuntius::EventConsumer
       "#{name.capitalize}::Event::#{properties[:type]}"
     end
 
-    def log_unkown_event(name, properties)
+    def log_unknown_event(name, properties)
       Mumukit::Nuntius::Logger.error "#{event_name(name, properties)} does not exists."
     end
 
