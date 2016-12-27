@@ -4,17 +4,20 @@ module Mumukit::Nuntius::EventConsumer
 
     def start(name)
       Mumukit::Nuntius::Consumer.start "#{name}-events", 'events' do |_delivery_info, properties, body|
-        next if body['sender'] == Mumukit::Nuntius.config.app_name
-        begin
-          choose_event(name, properties).execute!(body['data'])
-        rescue NoMethodError => e
-          log_exception(name, properties, e)
-        rescue NameError => e
-          log_unknown_event(name, properties)
-        rescue => e
-          log_exception(name, properties, e)
-        end
+        handle_event(name, properties, body)
       end
+    end
+
+    def handle_event(name, properties, body)
+      return if body[:sender] == Mumukit::Nuntius.config.app_name
+
+      choose_event(name, properties).execute!(body[:data])
+    rescue NoMethodError => e
+      log_exception(name, properties, e)
+    rescue NameError => e
+      log_unknown_event(name, properties)
+    rescue => e
+      log_exception(name, properties, e)
     end
 
     def choose_event(name, properties)

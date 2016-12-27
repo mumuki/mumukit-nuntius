@@ -23,17 +23,22 @@ module Mumukit::Nuntius::Consumer
     def subscribe(queue, channel, &block)
       Mumukit::Nuntius::Logger.debug "Subscribed to queue #{queue}"
 
-      queue.subscribe(:manual_ack => true, :block => true) do |delivery_info, properties, body|
+      queue.subscribe(manual_ack: true, block: true) do |delivery_info, properties, body|
         Mumukit::Nuntius::Logger.debug "Processing message #{body}"
-
-        begin
-          block.call delivery_info, properties, JSON.parse(body)
-          channel.ack(delivery_info.delivery_tag)
-        rescue => e
-          Mumukit::Nuntius::Logger.warn "Failed to read body: #{e.message} \n #{e.backtrace}"
-          channel.nack(delivery_info.delivery_tag, false, true)
-        end
+        handle_message(channel, delivery_info, properties, body, &block)
       end
+    end
+
+    def handle_message(channel, delivery_info, properties, body, &block)
+      block.call delivery_info, properties, parse_body(body)
+      channel.ack(delivery_info.delivery_tag)
+    rescue => e
+      Mumukit::Nuntius::Logger.warn "Failed to read body: #{e.message} \n #{e.backtrace}"
+      channel.nack(delivery_info.delivery_tag, false, true)
+    end
+
+    def parse_body(body)
+      JSON.parse(body).with_indifferent_access
     end
   end
 end
