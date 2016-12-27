@@ -1,4 +1,4 @@
-require 'active_support/all'
+require 'mumukit/core'
 
 require 'bunny'
 require 'logger'
