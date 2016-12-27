@@ -25,16 +25,16 @@ module Mumukit::Nuntius::Consumer
 
       queue.subscribe(manual_ack: true, block: true) do |delivery_info, properties, body|
         Mumukit::Nuntius::Logger.debug "Processing message #{body}"
-        handle_message(channel, delivery_info, properties, body, &block)
+        handle_message channel, delivery_info, properties, body, &block
       end
     end
 
     def handle_message(channel, delivery_info, properties, body, &block)
       block.call delivery_info, properties, parse_body(body)
-      channel.ack(delivery_info.delivery_tag)
+      channel.ack delivery_info.delivery_tag
     rescue => e
       Mumukit::Nuntius::Logger.warn "Failed to read body: #{e.message} \n #{e.backtrace}"
-      channel.nack(delivery_info.delivery_tag, false, true)
+      channel.nack delivery_info.delivery_tag, false, true
     end
 
     def parse_body(body)
