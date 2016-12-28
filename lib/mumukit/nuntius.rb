@@ -16,6 +16,13 @@ module Mumukit
       @config
     end
 
+    def method_missing(name, *args, &block)
+      if name.to_s.starts_with? 'notify'
+        Mumukit::Nuntius.config.send(name, *args)
+      else
+        super
+      end
+    end
   end
 end
 
