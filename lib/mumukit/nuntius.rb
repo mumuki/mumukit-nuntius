@@ -16,6 +16,9 @@ module Mumukit
       @config
     end
 
+    def self.method_missing(name, *args, &block)
+      Mumukit::Nuntius.config.notification_mode.send(name, *args)
+    end
   end
 end
 
@@ -26,3 +29,4 @@ require 'mumukit/nuntius/publisher'
 require 'mumukit/nuntius/consumer'
 require 'mumukit/nuntius/event_consumer'
 require 'mumukit/nuntius/event_publisher'
+require 'mumukit/nuntius/notification_mode'
