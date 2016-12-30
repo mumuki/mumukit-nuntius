@@ -3,5 +3,5 @@ require 'mumukit/nuntius'
 
 Mumukit::Nuntius.configure do  |config|
   config.app_name = 'TestApp'
-  config.notification_mode = Mumukit::Nuntius::NotificationMode.from_env
+  config.notification_mode = Mumukit::Nuntius::NotificationMode::Deaf.new
 end
