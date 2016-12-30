@@ -18,6 +18,7 @@ describe Mumukit::Nuntius::NotificationMode do
       ENV['TEST_ENV'] = 'production'
       ENV['QUEUELESS_MODE'] = nil
     end
-    it { expect(Mumukit::Nuntius::NotificationMode.from_env).to be_a Mumukit::Nuntius::NotificationMode::Nuntius }
+
+    skip { expect(Mumukit::Nuntius::NotificationMode.from_env).to be_a Mumukit::Nuntius::NotificationMode::Nuntius }
   end
 end
