@@ -17,7 +17,7 @@ module Mumukit
     end
 
     def self.method_missing(name, *args, &block)
-      Mumukit::Nuntius.config.notification_mode.send(name, *args)
+      Mumukit::Nuntius.config.notification_mode.send(name, *args, &block)
     end
   end
 end
