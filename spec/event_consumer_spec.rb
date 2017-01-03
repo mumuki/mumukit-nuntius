@@ -4,7 +4,7 @@ describe Mumukit::Nuntius::EventConsumer do
   before { class_double('Foo::Event::UserChanged').as_stubbed_const(transfer_nested_constants: true) }
 
   context 'when sender is a different application' do
-    before { expect(Foo::Event::UserChanged).to receive(:execute!).with({foo: 'bar', bar: 'baz'}) }
+    before { expect(Foo::Event::UserChanged).to receive(:execute!).with(foo: 'bar', bar: 'baz') }
 
     it { Mumukit::Nuntius::EventConsumer.handle_event(:foo,
                                                       {type: :UserChanged},
@@ -16,8 +16,10 @@ describe Mumukit::Nuntius::EventConsumer do
 
     it { Mumukit::Nuntius::EventConsumer.handle_event(:foo,
                                                       {type: :UserChanged},
-                                                      {'sender' => 'TestApp',
-                                                       'data' => {'foo' => 'bar', 'bar' => 'baz'}}.with_indifferent_access) }
+                                                      {'data' => {
+                                                          'sender' => 'TestApp',
+                                                          'foo' => 'bar',
+                                                          'bar' => 'baz'}}.with_indifferent_access) }
   end
 end
 

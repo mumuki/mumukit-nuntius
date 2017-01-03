@@ -9,7 +9,7 @@ module Mumukit::Nuntius::EventConsumer
     end
 
     def handle_event(name, properties, body)
-      return if body[:sender] == Mumukit::Nuntius.config.app_name
+      return if body[:data][:sender] == Mumukit::Nuntius.config.app_name
 
       choose_event(name, properties).execute!(body[:data])
     rescue NoMethodError => e
