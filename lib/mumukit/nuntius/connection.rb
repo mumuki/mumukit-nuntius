@@ -3,7 +3,7 @@ class Mumukit::Nuntius::Connection
   class << self
 
     def config
-      @config ||= YAML.load(ERB.new(File.read(File.expand_path '../../../../config/rabbit.yml', __FILE__)).result).
+      @config ||= YAML.load_interpolated(File.expand_path '../../../../config/rabbit.yml', __FILE__).
           with_indifferent_access[ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development']
     end
 
