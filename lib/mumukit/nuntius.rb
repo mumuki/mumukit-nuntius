@@ -22,8 +22,18 @@ module Mumukit
       @config
     end
 
-    def self.method_missing(name, *args, &block)
-      Mumukit::Nuntius.config.notification_mode.send(name, *args, &block)
+    def self.notify!(queue_name, data)
+      notification_mode.notify! queue_name, data
+    end
+
+    def self.notify_event!(data, type)
+      notification_mode.notify_event! data, type
+    end
+
+    private
+
+    def self.notification_mode
+      Mumukit::Nuntius.config.notification_mode
     end
   end
 end
