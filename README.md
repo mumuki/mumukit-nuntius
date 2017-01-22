@@ -30,7 +30,8 @@ Or install it yourself as:
 ## Publishing data
 
 ```ruby
-    Mumukit::Nuntius::Publisher.publish_{{queue_name}} data
+    Mumukit::Nuntius.notify! :recipes, name: 'Asado', steps: ['add salt to meat', 'more steps']
+    Mumukit::Nuntius.notify_event! :user_banned, user: 'Nene Malo'
 ```
 
 ## Development
