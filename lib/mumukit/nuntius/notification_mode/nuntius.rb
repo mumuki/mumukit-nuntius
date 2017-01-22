@@ -4,7 +4,7 @@ module Mumukit::Nuntius::NotificationMode
       Mumukit::Nuntius::Publisher.publish queue_name, event
     end
 
-    def notify_event!(data, type)
+    def notify_event!(type, data)
       Mumukit::Nuntius::EventPublisher.publish type, data
     end
   end

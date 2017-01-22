@@ -48,10 +48,10 @@ module Mumukit
     #
     # Events are consumed using the Mumukit::Nuntius::EventConsumer module
     #
-    # @param [Hash] event a json-like hash with the event data
     # @param [String|Symbol] type the type of event.
-    def self.notify_event!(event, type)
-      notification_mode.notify_event! event, type
+    # @param [Hash] event a json-like hash with the event data
+    def self.notify_event!(type, event)
+      notification_mode.notify_event! type, event
     end
 
     private
