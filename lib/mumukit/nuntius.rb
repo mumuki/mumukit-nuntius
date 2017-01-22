@@ -8,8 +8,14 @@ module Mumukit
     Logger = ::Logger.new('nuntius.log')
 
     def self.configure
-      @config ||= OpenStruct.new
+      @config ||= defaults
       yield @config
+    end
+
+    def self.defaults
+      struct.tap do |config|
+        config.notification_mode = Mumukit::Nuntius::NotificationMode.from_env
+      end
     end
 
     def self.config
