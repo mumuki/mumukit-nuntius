@@ -1,4 +1,12 @@
 module Mumukit::Nuntius::EventConsumer
+  module Handler
+    def define_handler(event, &block)
+      handler = Class.new do
+        define_singleton_method :execute!, &block
+      end
+      const_set(event, handler)
+    end
+  end
 
   class << self
 
