@@ -9,8 +9,7 @@ module Mumukit::Nuntius::EventConsumer
   end
 
   class << self
-
-    def start(name)
+    def start(name = Mumukit::Nuntius.config.app_name)
       Mumukit::Nuntius::Consumer.start "#{name}-events", 'events' do |_delivery_info, properties, body|
         handle_event(name, properties, body)
       end
