@@ -2,7 +2,7 @@ require_relative './spec_helper'
 
 module TestApp
   module Event
-    extend Mumukit::Nuntius::EventConsumer::Handler
+    extend Mumukit::Nuntius::EventConsumer::HandlerModule
     define_handler :DynamicEvent do |data|
       2
     end
