@@ -1,52 +1,59 @@
 require_relative './spec_helper'
 
-module TestApp
-  module Event
-    extend Mumukit::Nuntius::EventConsumer::HandlerModule
-    define_handler :DynamicEvent do |data|
-      2
+describe Mumukit::Nuntius::EventConsumer do
+  describe '#handle' do
+    context 'when single handle' do
+      before do
+        Mumukit::Nuntius::EventConsumer.handle { event(:DynamicEvent) { |data| 2 } }
+      end
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? :DynamicEvent).to be true }
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherEvent).to be false }
+    end
+
+    context 'when multiple handles' do
+      before do
+        Mumukit::Nuntius::EventConsumer.handle { event(:DynamicEvent) { |data| 2 } }
+        Mumukit::Nuntius::EventConsumer.handle do
+          event(:OtherEvent) { |data| 2 }
+          event(:OtherMoreEvent) { |data| 2 }
+        end
+      end
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? :DynamicEvent).to be false }
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherEvent).to be true }
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherMoreEvent).to be true }
     end
   end
-end
 
-describe Mumukit::Nuntius::EventConsumer do
-  describe '#define_handler' do
-    it { expect(TestApp::Event::DynamicEvent.execute!(nil)).to eq 2 }
-  end
-
-  describe '#handle_event!' do
-    before { class_double('Foo::Event::UserChanged').as_stubbed_const(transfer_nested_constants: true) }
-
+  describe '#handle_event!!' do
+    let(:receptor) { double('receptor') }
+    before { Mumukit::Nuntius::EventConsumer.register_handlers! UserChanged: proc { |data| receptor.process!(data) } }
 
     context 'when sender is not present' do
-      before { expect(Foo::Event::UserChanged).to receive(:execute!).with(foo: 'bar', bar: 'baz') }
+      before { expect(receptor).to receive(:process!).with(foo: 'bar', bar: 'baz') }
 
-      it { Mumukit::Nuntius::EventConsumer.handle_event(:foo,
-                                                        {type: :UserChanged},
-                                                        {'data' => {'foo' => 'bar', 'bar' => 'baz'}}.with_indifferent_access) }
+      it { Mumukit::Nuntius::EventConsumer.handle_event!({type: :UserChanged},
+                                                         {'data' => {'foo' => 'bar', 'bar' => 'baz'}}.with_indifferent_access) }
     end
 
 
     context 'when sender is a different application' do
-      before { expect(Foo::Event::UserChanged).to receive(:execute!).with(foo: 'bar', bar: 'baz') }
+      before { expect(receptor).to receive(:process!).with(foo: 'bar', bar: 'baz') }
 
-      it { Mumukit::Nuntius::EventConsumer.handle_event(:foo,
-                                                        {type: :UserChanged},
-                                                        {'data' => {
-                                                            'sender' => 'Baz',
-                                                            'foo' => 'bar',
-                                                            'bar' => 'baz'}}.with_indifferent_access) }
+      it { Mumukit::Nuntius::EventConsumer.handle_event!({type: :UserChanged},
+                                                         {'data' => {
+                                                             'sender' => 'Baz',
+                                                             'foo' => 'bar',
+                                                             'bar' => 'baz'}}.with_indifferent_access) }
     end
 
     context 'when sender is same application' do
-      before { expect(Foo::Event::UserChanged).to_not receive(:execute!) }
+      before { expect(receptor).to_not receive(:process!) }
 
-      it { Mumukit::Nuntius::EventConsumer.handle_event(:foo,
-                                                        {type: :UserChanged},
-                                                        {'data' => {
-                                                            'sender' => 'TestApp',
-                                                            'foo' => 'bar',
-                                                            'bar' => 'baz'}}.with_indifferent_access) }
+      it { Mumukit::Nuntius::EventConsumer.handle_event!({type: :UserChanged},
+                                                         {'data' => {
+                                                             'sender' => 'TestApp',
+                                                             'foo' => 'bar',
+                                                             'bar' => 'baz'}}.with_indifferent_access) }
     end
   end
 end
