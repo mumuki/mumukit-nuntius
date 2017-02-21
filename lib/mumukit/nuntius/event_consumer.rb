@@ -1,46 +1,58 @@
 module Mumukit::Nuntius::EventConsumer
-  module HandlerModule
-    def define_handler(event, &block)
-      handler = Class.new do
-        define_singleton_method :execute!, &block
-      end
-      const_set(event, handler)
+  class Builder
+    def initialize
+      @handlers = {}
+    end
+
+    def event(key, &block)
+      @handlers[key] = block
+    end
+
+    def build
+      @handlers
     end
   end
 
   class << self
-    def start(name = Mumukit::Nuntius.config.app_name)
-      Mumukit::Nuntius::Consumer.start "#{name}-events", 'events' do |_delivery_info, properties, body|
-        handle_event(name, properties, body)
+    @@handlers = {}
+
+    def handle(&block)
+      register_handlers! Builder.new.tap { |it| it.instance_eval(&block) }.build
+    end
+
+    def register_handlers!(handlers)
+      @@handlers = handlers
+    end
+
+    def start!
+      queue_name = "#{Mumukit::Nuntius.config.app_name}-events"
+      Mumukit::Nuntius::Consumer.start queue_name, 'events' do |_delivery_info, properties, body|
+        handle_event!(properties, body)
       end
     end
 
-    def handle_event(name, properties, body)
+    def handles?(event)
+      @@handlers[event].present?
+    end
+
+    def handle_event!(properties, body)
       return if body[:data][:sender] == Mumukit::Nuntius.config.app_name
-
-      choose_event(name, properties).execute!(body[:data].except(:sender))
-    rescue NoMethodError => e
-      log_exception(name, properties, e)
-    rescue NameError => _
-      log_unknown_event(name, properties)
+      event = properties[:type]
+      if handles? event
+        @@handlers[event].call body[:data].except(:sender)
+      else
+        log_unknown_event event
+      end
     rescue => e
-      log_exception(name, properties, e)
+      log_exception(event, e)
     end
 
-    def choose_event(name, properties)
-      event_name(name, properties).constantize
+    def log_unknown_event(event)
+      Mumukit::Nuntius::Logger.info "Unhandled #{event} does not exists."
     end
 
-    def event_name(name, properties)
-      "#{name.capitalize}::Event::#{properties[:type]}"
-    end
-
-    def log_unknown_event(name, properties)
-      Mumukit::Nuntius::Logger.info "#{event_name(name, properties)} does not exists."
-    end
-
-    def log_exception(name, properties, e)
-      Mumukit::Nuntius::Logger.error "Failed to proccess #{event_name(name, properties)}, error was: #{e}"
+    def log_exception(event, e)
+      Mumukit::Nuntius::Logger.error "Failed to proccess #{event}, error was: #{e}"
     end
   end
 end
