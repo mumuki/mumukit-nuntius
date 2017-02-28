@@ -18,6 +18,9 @@ describe Mumukit::Nuntius::EventConsumer do
           event(:OtherMoreEvent) { |data| 2 }
         end
       end
+
+      it { expect(Mumukit::Nuntius::EventConsumer.handled_events).to eq [:OtherEvent, :OtherMoreEvent] }
+
       it { expect(Mumukit::Nuntius::EventConsumer.handles? :DynamicEvent).to be false }
       it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherEvent).to be true }
       it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherMoreEvent).to be true }

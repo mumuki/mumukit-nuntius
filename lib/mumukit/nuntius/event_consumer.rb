@@ -20,6 +20,10 @@ module Mumukit::Nuntius::EventConsumer
       register_handlers! Builder.new.tap { |it| it.instance_eval(&block) }.build
     end
 
+    def handled_events
+      @@handlers.keys
+    end
+
     def register_handlers!(handlers)
       @@handlers = handlers
     end
@@ -32,7 +36,7 @@ module Mumukit::Nuntius::EventConsumer
     end
 
     def handles?(event)
-      @@handlers[event].present?
+      handled_events.include? event
     end
 
     def handle_event!(properties, body)
