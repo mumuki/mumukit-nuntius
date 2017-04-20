@@ -9,7 +9,7 @@ module Mumukit::Nuntius::EventConsumer
     end
 
     def build
-      @handlers
+      @handlers.with_indifferent_access
     end
   end
 
@@ -36,7 +36,7 @@ module Mumukit::Nuntius::EventConsumer
     end
 
     def handles?(event)
-      handled_events.include? event
+      @@handlers.include? event
     end
 
     def handle_event!(properties, body)

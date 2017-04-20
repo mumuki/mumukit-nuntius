@@ -16,14 +16,18 @@ describe Mumukit::Nuntius::EventConsumer do
         Mumukit::Nuntius::EventConsumer.handle do
           event(:OtherEvent) { |data| 2 }
           event(:OtherMoreEvent) { |data| 2 }
+          event('OtherStringEvent') { |data| 2 }
         end
       end
 
-      it { expect(Mumukit::Nuntius::EventConsumer.handled_events).to eq [:OtherEvent, :OtherMoreEvent] }
+      it { expect(Mumukit::Nuntius::EventConsumer.handled_events).to eq %w(OtherEvent OtherMoreEvent OtherStringEvent) }
 
       it { expect(Mumukit::Nuntius::EventConsumer.handles? :DynamicEvent).to be false }
       it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherEvent).to be true }
       it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherMoreEvent).to be true }
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? 'OtherMoreEvent').to be true }
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? 'OtherStringEvent').to be true }
+      it { expect(Mumukit::Nuntius::EventConsumer.handles? :OtherStringEvent).to be true }
     end
   end
 
