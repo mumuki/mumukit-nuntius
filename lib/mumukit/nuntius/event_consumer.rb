@@ -52,7 +52,7 @@ module Mumukit::Nuntius::EventConsumer
     end
 
     def log_unknown_event(event)
-      Mumukit::Nuntius::Logger.info "Unhandled #{event} does not exists."
+      Mumukit::Nuntius::Logger.info "Unhandled event: #{event} does not exists."
     end
 
     def log_exception(event, e)
