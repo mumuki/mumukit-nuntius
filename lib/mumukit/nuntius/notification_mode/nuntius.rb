@@ -7,5 +7,9 @@ module Mumukit::Nuntius::NotificationMode
     def notify_event!(type, data)
       Mumukit::Nuntius::EventPublisher.publish type, data
     end
+
+    def establish_connection
+      Mumukit::Nuntius::Connection.establish_connection
+    end
   end
 end

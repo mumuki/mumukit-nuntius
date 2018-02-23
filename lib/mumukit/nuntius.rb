@@ -54,6 +54,10 @@ module Mumukit
       notification_mode.notify_event! type, event
     end
 
+    def self.establish_connection
+      notification_mode.establish_connection
+    end
+
     private
 
     def self.notification_mode
