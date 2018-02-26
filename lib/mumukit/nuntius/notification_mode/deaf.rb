@@ -5,5 +5,8 @@ module Mumukit::Nuntius::NotificationMode
 
     def notify_event!(*)
     end
+
+    def establish_connection
+    end
   end
 end

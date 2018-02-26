@@ -5,7 +5,7 @@ module Mumukit::Nuntius::Consumer
     def start(queue_name, exchange_name, &block)
       Mumukit::Nuntius::Logger.info "Attaching to queue #{queue_name}"
 
-      connection, channel, exchange = Mumukit::Nuntius::Connection.start(exchange_name)
+      channel, exchange = Mumukit::Nuntius::Connection.start_channel(exchange_name)
       queue = channel.queue(queue_name, durable: true)
       queue.bind(exchange)
       channel.prefetch(1)
@@ -16,7 +16,6 @@ module Mumukit::Nuntius::Consumer
         Mumukit::Nuntius::Logger.info "Leaving queue #{queue_name}"
       ensure
         channel.close
-        connection.close
       end
     end
 

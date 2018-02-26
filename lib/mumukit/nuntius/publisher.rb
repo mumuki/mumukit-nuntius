@@ -3,9 +3,9 @@ module Mumukit::Nuntius::Publisher
   class << self
 
     def publish(exchange_name, data, opts={})
-      connection, channel, exchange = Mumukit::Nuntius::Connection.start(exchange_name)
+      channel, exchange = Mumukit::Nuntius::Connection.start_channel(exchange_name)
       exchange.publish(data.to_json, opts.merge(persistent: true))
-      connection.close
+      channel.close
     end
 
     def method_missing(name, *args, &block)
