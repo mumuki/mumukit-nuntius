@@ -34,6 +34,15 @@ Or install it yourself as:
     Mumukit::Nuntius.notify_event! :user_banned, user: 'Nene Malo'
 ```
 
+## Establishing connection
+
+Since version 6.x.x the connection must be explicitly established:
+
+`Mumukit::Nuntius.establish_connection`
+
+If the server that uses Nuntius has multiple puma workers configured, the best option is to do it `on_worker_boot`.       
+If it runs in single mode, it should be done somewhere else, because that hook isn't called.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
