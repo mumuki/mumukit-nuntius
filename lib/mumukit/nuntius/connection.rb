@@ -6,7 +6,7 @@ class Mumukit::Nuntius::Connection
           with_indifferent_access[ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development']
     end
 
-    def start(exchange_name)
+    def start_channel(exchange_name)
       raise 'Nuntius connection isn\'t established' unless @connection
       channel = @connection.start.create_channel
       exchange = channel.fanout(exchange_name)

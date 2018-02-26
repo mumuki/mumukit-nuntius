@@ -5,7 +5,7 @@ module Mumukit::Nuntius::Consumer
     def start(queue_name, exchange_name, &block)
       Mumukit::Nuntius::Logger.info "Attaching to queue #{queue_name}"
 
-      channel, exchange = Mumukit::Nuntius::Connection.start(exchange_name)
+      channel, exchange = Mumukit::Nuntius::Connection.start_channel(exchange_name)
       queue = channel.queue(queue_name, durable: true)
       queue.bind(exchange)
       channel.prefetch(1)
