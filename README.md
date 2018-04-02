@@ -41,7 +41,9 @@ Since version 6.x.x the connection must be explicitly established:
 `Mumukit::Nuntius.establish_connection`
 
 If the server that uses Nuntius has multiple puma workers configured, the best option is to do it `on_worker_boot`.       
-If it runs in single mode, it should be done somewhere else, because that hook isn't called.
+If it runs in single mode, it should be done toplevel in `config.ru`, because that hook isn't called.
+
+Also consumers establish connections on start out of the box  
 
 ## Development
 
