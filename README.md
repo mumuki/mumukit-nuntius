@@ -30,20 +30,21 @@ Or install it yourself as:
 ## Publishing data
 
 ```ruby
-    Mumukit::Nuntius.notify! :recipes, name: 'Asado', steps: ['add salt to meat', 'more steps']
-    Mumukit::Nuntius.notify_event! :user_banned, user: 'Nene Malo'
+    nuntius = Mumukit::Nuntius::Publisher.new :cocina
+    nuntius.notify! :recipes, name: 'Asado', steps: ['add salt to meat', 'more steps']
+    nuntius.notify_event! :user_banned, user: 'Nene Malo'
 ```
 
 ## Establishing connection
 
 Since version 6.x.x the connection must be explicitly established:
 
-`Mumukit::Nuntius.establish_connection`
+`Mumukit::Nuntius#establish_connection`
 
-If the server that uses Nuntius has multiple puma workers configured, the best option is to do it `on_worker_boot`.       
+If the server that uses Nuntius has multiple puma workers configured, the best option is to do it `on_worker_boot`.
 If it runs in single mode, it should be done toplevel in `config.ru`, because that hook isn't called.
 
-Also consumers establish connections on start out of the box  
+Also consumers establish connections on start out of the box
 
 ## Development
 

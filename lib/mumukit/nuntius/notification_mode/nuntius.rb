@@ -1,11 +1,14 @@
 module Mumukit::Nuntius::NotificationMode
   class Nuntius
-    def notify!(queue_name, event)
-      Mumukit::Nuntius::Publisher.publish queue_name, event
+    def notify_event!(component, event, payload)
+      payload.merge!(sender: component)
+      notify! "events", { data: payload }, { type: event }
     end
 
-    def notify_event!(type, data)
-      Mumukit::Nuntius::EventPublisher.publish type, data
+    def notify!(exchange_name, data, opts={})
+      channel, exchange = Mumukit::Nuntius::Connection.start_channel(exchange_name)
+      exchange.notify(data.to_json, opts.merge(persistent: true))
+      channel.close
     end
 
     def establish_connection
