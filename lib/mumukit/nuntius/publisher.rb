@@ -2,10 +2,8 @@ module Mumukit::Nuntius
   class Publisher
     def initialize(component_name)
       @component_name = component_name
-      @logger = ::Logger.new("#{component_name}.nuntius.log")
+      @logger = Mumukit::Nuntius.logger_for(component_name)
     end
-
-
 
     # Notifies a message to a given queue.
     #

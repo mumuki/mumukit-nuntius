@@ -4,6 +4,5 @@ require 'mumukit/core/rspec'
 
 
 Mumukit::Nuntius.configure do  |config|
-  config.app_name = 'TestApp'
   config.notification_mode = Mumukit::Nuntius::NotificationMode::Deaf.new
 end
