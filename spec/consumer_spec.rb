@@ -1,7 +1,8 @@
 require_relative './spec_helper'
 
 describe Mumukit::Nuntius::Consumer do
-  let(:consumer) { Mumukit::Nuntius::Consumer.new('TestApp') }
+  let(:component) { Mumukit::Nuntius::Component.new 'TestApp' }
+  let(:consumer) { Mumukit::Nuntius::Consumer.new(component) }
   describe 'parse_body' do
     let(:parsed_body) { consumer.parse_body '{"data":{"foo":"bar"}}' }
 

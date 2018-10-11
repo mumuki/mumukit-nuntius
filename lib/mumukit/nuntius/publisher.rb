@@ -1,8 +1,7 @@
 module Mumukit::Nuntius
   class Publisher
-    def initialize(component_name)
-      @component_name = component_name
-      @logger = Mumukit::Nuntius.logger_for(component_name)
+    def initialize(component)
+      @component = component
     end
 
     # Notifies a message to a given queue.
@@ -34,7 +33,7 @@ module Mumukit::Nuntius
     # @param [String|Symbol] type the type of event.
     # @param [Hash] event a json-like hash with the event data
     def notify_event!(type, event)
-      notification_mode.notify_event! @component_name, type, event
+      notification_mode.notify_event! @component.name, type, event
     end
 
     def establish_connection

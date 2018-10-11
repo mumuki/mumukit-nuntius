@@ -13,10 +13,11 @@ class Mumukit::Nuntius::EventConsumer
     end
   end
 
-  def initialize(component_name)
+  delegate :logger, :consumer, to: :@component
+
+  def initialize(component)
     @handlers = {}
-    @component_name = component_name
-    @logger = Mumukit::Nuntius.logger_for(component_name)
+    @component = component
   end
 
   def handle(&block)
@@ -36,14 +37,14 @@ class Mumukit::Nuntius::EventConsumer
   end
 
   def start!
-    queue_name = "#{@component_name}-events"
+    queue_name = "#{@component.name}-events"
     consumer.start queue_name, 'events' do |_delivery_info, properties, body|
       handle_event!(properties, body)
     end
   end
 
   def handle_event!(properties, body)
-    return if body[:data][:sender] == @component_name
+    return if body[:data][:sender] == @component.name
     event = properties[:type]
     if handles? event
       @handlers[event].call body[:data].except(:sender)
@@ -55,11 +56,6 @@ class Mumukit::Nuntius::EventConsumer
   end
 
   private
-
-  def consumer
-    Mumukit::Nuntius::Consumer.new(@component_name)
-  end
-
 
   def log_unknown_event(event)
     @logger.info "Unhandled event: #{event} does not exists."

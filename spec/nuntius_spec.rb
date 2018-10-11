@@ -1,7 +1,8 @@
 require_relative './spec_helper'
 
 describe Mumukit::Nuntius do
-  let(:publisher) { Mumukit::Nuntius::Publisher.new :cocina }
+  let(:component) { Mumukit::Nuntius::Component.new :cocina }
+  let(:publisher) { Mumukit::Nuntius::Publisher.new component }
 
   it 'method missing' do
     expect(Mumukit::Nuntius.config.notification_mode).to receive(:notify!)

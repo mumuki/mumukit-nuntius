@@ -1,7 +1,8 @@
 require_relative './spec_helper'
 
 describe Mumukit::Nuntius::EventConsumer do
-  let(:event_consumer) { Mumukit::Nuntius::EventConsumer.new('TestApp') }
+  let(:component) { Mumukit::Nuntius::Component.new 'TestApp' }
+  let(:event_consumer) { Mumukit::Nuntius::EventConsumer.new(component) }
   describe '#handle' do
     context 'when single handle' do
       before do
