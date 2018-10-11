@@ -21,6 +21,10 @@ module Mumukit
       end
     end
 
+    def self.establish_connection
+      config.notification_mode.establish_connection
+    end
+
     def self.logger_for(component_name)
       ::Logger.new("#{component_name}.nuntius.log")
     end

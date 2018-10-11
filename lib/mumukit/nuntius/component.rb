@@ -23,7 +23,7 @@ module Mumukit::Nuntius
     private
 
     def publisher
-      @publisher ||= Mumukit::Nuntius::Publisher.new(self).tap(&:establish_connection)
+      @publisher ||= Mumukit::Nuntius::Publisher.new(self)
     end
   end
 end

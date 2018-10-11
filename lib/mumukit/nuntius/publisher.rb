@@ -36,10 +36,6 @@ module Mumukit::Nuntius
       notification_mode.notify_event! @component.name, type, event
     end
 
-    def establish_connection
-      notification_mode.establish_connection
-    end
-
     private
 
     def notification_mode
