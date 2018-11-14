@@ -8,10 +8,10 @@ require 'mumukit/nuntius/version'
 Gem::Specification.new do |spec|
   spec.name          = "mumukit-nuntius"
   spec.version       = Mumukit::Nuntius::VERSION
-  spec.authors       = ["Agustin Pina"]
-  spec.email         = ["agus@mumuki.org"]
+  spec.authors       = ["Agustin Pina", "Franco Bulgarelli"]
+  spec.email         = ["agus@mumuki.org", "franco@mumuki.org"]
   spec.summary       = 'Library for working with rabbit queues'
-  spec.homepage      = 'http://github.com/mumuki/mumukit-auth'
+  spec.homepage      = 'http://github.com/mumuki/mumukit-nuntius'
   spec.license       = "MIT"
 
   spec.files         = Dir['lib/**/**'] + Dir['config/**']
