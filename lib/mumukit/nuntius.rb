@@ -5,21 +5,14 @@ require 'logger'
 
 module Mumukit
   module Nuntius
-    Logger = ::Logger.new('nuntius.log')
+    extend Mumukit::Core::Configurable
 
-    def self.configure
-      @config ||= defaults
-      yield @config
-    end
+    Logger = ::Logger.new('nuntius.log')
 
     def self.defaults
       struct.tap do |config|
         config.notification_mode = Mumukit::Nuntius::NotificationMode.from_env
       end
-    end
-
-    def self.config
-      @config
     end
 
     # Notifies a message to a given queue.
