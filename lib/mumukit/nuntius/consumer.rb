@@ -19,6 +19,16 @@ module Mumukit::Nuntius::Consumer
       end
     end
 
+    def negligent_start!(queue_name, &block)
+      start queue_name, queue_name do |_delivery_info, _properties, body|
+        begin
+          block.call(body)
+        rescue => e
+          Mumukit::Nuntius::Logger.error "#{queue_name} item couldn't be processed #{e}. body was: #{body}"
+        end
+      end
+    end
+
     def subscribe(queue, channel, &block)
       Mumukit::Nuntius::Logger.debug "Subscribed to queue #{queue}"
 
