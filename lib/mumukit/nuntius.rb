@@ -51,6 +51,10 @@ module Mumukit
       notification_mode.establish_connection
     end
 
+    def self.ensure_connection
+      establish_connection rescue nil
+    end
+
     private
 
     def self.notification_mode
