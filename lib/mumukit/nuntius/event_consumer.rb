@@ -48,15 +48,15 @@ module Mumukit::Nuntius::EventConsumer
         log_unknown_event event
       end
     rescue => e
-      log_exception(event, e)
+      log_exception(event, e, body[:data])
     end
 
     def log_unknown_event(event)
       Mumukit::Nuntius::Logger.info "Unhandled event: #{event} does not exists."
     end
 
-    def log_exception(event, e)
-      Mumukit::Nuntius::Logger.error "Failed to proccess #{event}, error was: #{e}"
+    def log_exception(event, e, body)
+      Mumukit::Nuntius::Logger.error "Failed to proccess #{event}, error was: #{e}, body was: #{body}"
     end
   end
 end
