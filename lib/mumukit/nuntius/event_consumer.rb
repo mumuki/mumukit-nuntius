@@ -5,12 +5,24 @@ module Mumukit::Nuntius::EventConsumer
     end
 
     def event(key, &block)
-      @handlers[key] = block
+      @handlers[key] = with_database_reconnection &block
     end
 
     def build
       @handlers.with_indifferent_access
     end
+
+    private
+
+    def with_database_reconnection(&block)
+      return block unless defined? ActiveRecord
+      proc do |*args|
+        ActiveRecord::Base.connection_pool.with_connection do
+          block.call *args
+        end
+      end
+    end
+
   end
 
   class << self
