@@ -18,7 +18,7 @@ module Mumukit::Nuntius::EventConsumer
       return block unless defined? ActiveRecord
       proc do |*args|
         ActiveRecord::Base.connection_pool.with_connection do
-          block.call *args
+          block.call(*args)
         end
       end
     end
