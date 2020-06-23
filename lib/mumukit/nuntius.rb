@@ -43,8 +43,8 @@ module Mumukit
     #
     # @param [String|Symbol] type the type of event.
     # @param [Hash] event a json-like hash with the event data
-    def self.notify_event!(type, event)
-      notification_mode.notify_event! type, event
+    def self.notify_event!(type, event, **options)
+      notification_mode.notify_event! type, event, **options
     end
 
     def self.establish_connection
