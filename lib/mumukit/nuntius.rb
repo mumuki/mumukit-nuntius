@@ -47,6 +47,28 @@ module Mumukit
       notification_mode.notify_event! type, event, **options
     end
 
+    # Notifies a job of the given type.
+    #
+    # Jobs are very similar to normal messages, with the following differences:
+    #
+    #   * they are published to a single queue, named `jobs`
+    #   * job data is augmented with the sender app name,
+    #     so that consumers can consume only jobs sent from themselves.
+    #
+    # This makes jobs lighter and easier to send. You should send application
+    # jobs to here if:
+    #
+    #   * you expect to send a lot of those jobs
+    #   * you expect those jobs processing to be slow
+    #
+    # Events are consumed using the Mumukit::Nuntius::JobConsumer module
+    #
+    # @param [String|Symbol] type the type of job.
+    # @param [Hash] job a json-like hash with the job data
+    def self.notify_job!(type, job)
+      notification_mode.notify_job! type, job
+    end
+
     def self.establish_connection
       notification_mode.establish_connection
     end
@@ -68,6 +90,9 @@ require 'mumukit/nuntius/connection'
 require 'mumukit/nuntius/channel'
 require 'mumukit/nuntius/publisher'
 require 'mumukit/nuntius/consumer'
+require 'mumukit/nuntius/task_consumer'
 require 'mumukit/nuntius/event_consumer'
 require 'mumukit/nuntius/event_publisher'
+require 'mumukit/nuntius/job_consumer'
+require 'mumukit/nuntius/job_publisher'
 require 'mumukit/nuntius/notification_mode'

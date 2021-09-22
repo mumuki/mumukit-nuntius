@@ -3,6 +3,9 @@ module Mumukit::Nuntius::NotificationMode
     def notify!(*)
     end
 
+    def notify_job!(*)
+    end
+
     def notify_event!(*)
     end
 

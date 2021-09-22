@@ -1,19 +1,19 @@
-module Mumukit::Nuntius::EventConsumer
+module Mumukit::Nuntius::JobConsumer
 
   extend Mumukit::Nuntius::TaskConsumer
 
   class Builder < Mumukit::Nuntius::TaskConsumer::Builder
-    def event(key, &block)
+    def job(key, &block)
       task(key, &block)
     end
   end
 
   class << self
     def builder
-      Mumukit::Nuntius::EventConsumer::Builder
+      Mumukit::Nuntius::JobConsumer::Builder
     end
 
-    def handled_events
+    def handled_jobs
       handled_tasks
     end
 
@@ -22,15 +22,15 @@ module Mumukit::Nuntius::EventConsumer
     end
 
     def task_type
-      'event'
+      'job'
     end
 
-    def handle_event!(properties, body)
+    def handle_job!(properties, body)
       handle_tasks! properties, body
     end
 
     def skip_process?(body)
-      body[:data][:sender] == Mumukit::Nuntius.config.app_name
+      body[:data][:sender].try { |sender| sender != Mumukit::Nuntius.config.app_name }
     end
   end
 end
