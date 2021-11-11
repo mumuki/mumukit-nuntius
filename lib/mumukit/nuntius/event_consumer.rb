@@ -3,18 +3,16 @@ module Mumukit::Nuntius::EventConsumer
   extend Mumukit::Nuntius::TaskConsumer
 
   class Builder < Mumukit::Nuntius::TaskConsumer::Builder
-    def event(key, &block)
-      task(key, &block)
-    end
+    alias_method :event, :task
   end
 
   class << self
+
+    alias_method :handled_events, :handled_tasks
+    alias_method :handle_event!, :handle_tasks!
+
     def builder
       Mumukit::Nuntius::EventConsumer::Builder
-    end
-
-    def handled_events
-      handled_tasks
     end
 
     def tasks_type

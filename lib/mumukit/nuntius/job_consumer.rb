@@ -3,18 +3,16 @@ module Mumukit::Nuntius::JobConsumer
   extend Mumukit::Nuntius::TaskConsumer
 
   class Builder < Mumukit::Nuntius::TaskConsumer::Builder
-    def job(key, &block)
-      task(key, &block)
-    end
+    alias_method :job, :task
   end
 
   class << self
+
+    alias_method :handled_jobs, :handled_tasks
+    alias_method :handle_job!, :handle_tasks!
+
     def builder
       Mumukit::Nuntius::JobConsumer::Builder
-    end
-
-    def handled_jobs
-      handled_tasks
     end
 
     def tasks_type
@@ -23,10 +21,6 @@ module Mumukit::Nuntius::JobConsumer
 
     def task_type
       'job'
-    end
-
-    def handle_job!(properties, body)
-      handle_tasks! properties, body
     end
 
     def skip_process?(body)
