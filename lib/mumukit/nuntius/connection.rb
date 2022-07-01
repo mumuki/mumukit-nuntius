@@ -15,7 +15,7 @@ class Mumukit::Nuntius::Connection
 
     def establish_connection
       raise 'Nuntius connection already established' if connected?
-      @connection = Bunny.new(host: config[:host], user: config[:user], password: config[:password])
+      @connection = Bunny.new(host: config[:host], port: config[:port], user: config[:user], password: config[:password])
     end
 
     def connected?

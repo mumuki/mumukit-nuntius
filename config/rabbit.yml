@@ -1,6 +1,6 @@
 production:
   host: <%=ENV['MUMUKI_RABBIT_HOST']%>
-  port: <%=ENV['MUMUKI_RABBIT_PORT']%>
+  port: <%=ENV['MUMUKI_RABBIT_PORT']%> || 5672
   user: <%=ENV['MUMUKI_RABBIT_USERNAME']%>
   password: <%=ENV['MUMUKI_RABBIT_PASSWORD']%>
   database: <%=ENV['MUMUKI_RABBIT_DATABASE']%>
