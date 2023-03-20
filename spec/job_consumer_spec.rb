@@ -36,7 +36,7 @@ describe Mumukit::Nuntius::JobConsumer do
     before { Mumukit::Nuntius::JobConsumer.register_handlers! UserChanged: proc { |data| receptor.process!(data) } }
 
     context 'when sender is not present' do
-      before { expect(receptor).to receive(:process!).with(foo: 'bar', bar: 'baz') }
+      before { expect(receptor).to receive(:process!).with({foo: 'bar', bar: 'baz'}) }
 
       it { Mumukit::Nuntius::JobConsumer.handle_job!({type: :UserChanged},
                                                          {'data' => {'foo' => 'bar', 'bar' => 'baz'}}.with_indifferent_access) }
@@ -44,7 +44,7 @@ describe Mumukit::Nuntius::JobConsumer do
 
 
     context 'when sender is a different application' do
-      before { expect(receptor).to_not receive(:process!).with(foo: 'bar', bar: 'baz') }
+      before { expect(receptor).to_not receive(:process!).with({foo: 'bar', bar: 'baz'}) }
 
       it { Mumukit::Nuntius::JobConsumer.handle_job!({type: :UserChanged},
                                                          {'data' => {
@@ -64,4 +64,3 @@ describe Mumukit::Nuntius::JobConsumer do
     end
   end
 end
-

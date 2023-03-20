@@ -8,8 +8,8 @@ require 'mumukit/nuntius/version'
 Gem::Specification.new do |spec|
   spec.name          = "mumukit-nuntius"
   spec.version       = Mumukit::Nuntius::VERSION
-  spec.authors       = ["Agustin Pina", "Franco Bulgarelli"]
-  spec.email         = ["agus@mumuki.org", "franco@mumuki.org"]
+  spec.authors       = ["Franco Bulgarelli"]
+  spec.email         = ["franco@mumuki.org"]
   spec.summary       = 'Library for working with rabbit queues'
   spec.homepage      = 'http://github.com/mumuki/mumukit-nuntius'
   spec.license       = "MIT"
@@ -23,6 +23,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rspec', '~> 3.0'
 
-  spec.add_dependency 'mumukit-core', '~> 1.8'
+  spec.add_dependency 'mumukit-core', '~> 1.19'
   spec.add_dependency 'bunny', '~> 2.3'
+
+  spec.required_ruby_version = '>= 3.0'
 end
