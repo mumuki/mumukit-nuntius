@@ -6,7 +6,7 @@ module Mumukit::Nuntius::TaskConsumer
     end
 
     def task(key, &block)
-      @handlers[key] = with_database_reconnection &block
+      @handlers[key] = with_database_reconnection(&block)
     end
 
     def build

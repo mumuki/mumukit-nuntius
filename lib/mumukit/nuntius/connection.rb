@@ -1,4 +1,5 @@
 class Mumukit::Nuntius::Connection
+  @connection = nil
 
   class << self
     def config
