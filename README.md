@@ -31,7 +31,7 @@ Or install it yourself as:
 
 ```ruby
     Mumukit::Nuntius.notify! :recipes, name: 'Asado', steps: ['add salt to meat', 'more steps']
-    Mumukit::Nuntius.notify_event!(:user_banned, {user: 'Nene Malo'}, {sender: 'my_app'})
+    Mumukit::Nuntius.notify_event!(:user_banned, {user: 'Nene Malo'}, sender: 'my_app')
 ```
 
 ## Establishing connection
